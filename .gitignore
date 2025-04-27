@@ -3,6 +3,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Parquet files
+*.parquet
+
+#IPYNB Checkpoint files
+.ipynb_checkpoints
+
 # C extensions
 *.so
 
