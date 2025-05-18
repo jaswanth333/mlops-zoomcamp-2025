@@ -1,22 +1,58 @@
 blocks:
 - all_upstream_blocks_executed: true
   color: null
-  configuration:
-    file_path: data_loaders/load_data.py
-    file_source:
-      path: data_loaders/load_data.py
-  downstream_blocks: []
+  configuration: {}
+  downstream_blocks:
+  - transform_data
+  - summary_overview_for_load_taxt_data_march_2023
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: python
-  name: load_data
+  name: load_taxt_data_march_2023
   retry_config: null
   status: executed
   timeout: null
   type: data_loader
   upstream_blocks: []
-  uuid: load_data
+  uuid: load_taxt_data_march_2023
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - summary_overview_for_transform_data
+  - train_model
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: transform_data
+  retry_config: null
+  status: executed
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - load_taxt_data_march_2023
+  uuid: transform_data
+- all_upstream_blocks_executed: true
+  color: null
+  configuration:
+    file_path: transformers/train_model.py
+    file_source:
+      path: transformers/train_model.py
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: train_model
+  retry_config: null
+  status: executed
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - transform_data
+  uuid: train_model
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}
@@ -40,4 +76,46 @@ tags: []
 type: python
 uuid: taxi_pipeline
 variables_dir: /home/codespace/.mage_data/taxi_project
-widgets: []
+widgets:
+- all_upstream_blocks_executed: true
+  color: null
+  configuration:
+    chart_type: table
+    height: 3000
+    index: stats
+    x: headers
+    y: rows
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: summary overview for load_taxt_data_march_2023
+  retry_config: null
+  status: executed
+  timeout: null
+  type: chart
+  upstream_blocks:
+  - load_taxt_data_march_2023
+  uuid: summary_overview_for_load_taxt_data_march_2023
+- all_upstream_blocks_executed: true
+  color: null
+  configuration:
+    chart_type: table
+    height: 3000
+    index: stats
+    x: headers
+    y: rows
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: summary overview for transform_data
+  retry_config: null
+  status: executed
+  timeout: null
+  type: chart
+  upstream_blocks:
+  - transform_data
+  uuid: summary_overview_for_transform_data
