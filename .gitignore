@@ -180,7 +180,7 @@ cython_debug/
 .pypirc
 
 
-*.db
+
 .DS_Store
 .cache/
 .file_versions
