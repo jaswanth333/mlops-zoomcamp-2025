@@ -1,15 +1,21 @@
-import os
-import pickle
-
 import mlflow
 from flask import Flask, request, jsonify
 
+from mlflow.tracking import MlflowClient
 
-RUN_ID = os.getenv('RUN_ID')
 
-logged_model = f's3://mlflow-models-alexey/1/{RUN_ID}/artifacts/model'
-# logged_model = f'runs:/{RUN_ID}/model'
-model = mlflow.pyfunc.load_model(logged_model)
+MLFLOW_TRACKING_URI = 'http://localhost:5000'
+
+client = MlflowClient(tracking_uri=MLFLOW_TRACKING_URI)
+
+experiment = client.get_experiment_by_name("green-taxi-duration")
+runs = client.search_runs(experiment_ids=[experiment.experiment_id], order_by=["start_time DESC"], max_results=1)
+RUN_ID = runs[0].info.run_id
+
+mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+
+model_uri = f'runs:/{RUN_ID}/model'
+model = mlflow.pyfunc.load_model(model_uri)
 
 
 def prepare_features(ride):
