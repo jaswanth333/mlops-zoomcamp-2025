@@ -1,6 +1,8 @@
-import requests
 
 if __name__ == "__main__":
+
+    import requests
+
     ride = {
         "PULocationID": 10,
         "DOLocationID": 50,

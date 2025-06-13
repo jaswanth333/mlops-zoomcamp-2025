@@ -15,6 +15,7 @@ RUN_ID = runs[0].info.run_id
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 
 model_uri = f'runs:/{RUN_ID}/model'
+
 model = mlflow.pyfunc.load_model(model_uri)
 
 
