@@ -36,7 +36,7 @@ with open('models/lin_reg.bin', 'rb') as f_in:
 
 raw_data = pd.read_parquet('data/green_tripdata_2024-03.parquet')
 
-begin = datetime.datetime(2022, 2, 1, 0, 0)
+begin = datetime.datetime(2024, 3, 1, 0, 0)
 num_features = ['passenger_count', 'trip_distance', 'fare_amount', 'total_amount']
 cat_features = ['PULocationID', 'DOLocationID']
 column_mapping = ColumnMapping(
@@ -54,11 +54,11 @@ report = Report(metrics = [
 
 @task
 def prep_db():
-	with psycopg.connect("host=localhost port=5432 user=postgres password=example", autocommit=True) as conn:
-		res = conn.execute("SELECT 1 FROM pg_database WHERE datname='test'")
+	with psycopg.connect("host=localhost port=5433 user=postgres password=example", autocommit=True) as conn:
+		res = conn.execute("SELECT 1 FROM pg_database WHERE datname='postgres'")
 		if len(res.fetchall()) == 0:
-			conn.execute("create database test;")
-		with psycopg.connect("host=localhost port=5432 dbname=test user=postgres password=example") as conn:
+			conn.execute("create database postgres;")
+		with psycopg.connect("host=localhost port=5433 dbname=test user=postgres password=example") as conn:
 			conn.execute(create_table_statement)
 
 @task
@@ -87,7 +87,7 @@ def calculate_metrics_postgresql(curr, i):
 def batch_monitoring_backfill():
 	prep_db()
 	last_send = datetime.datetime.now() - datetime.timedelta(seconds=10)
-	with psycopg.connect("host=localhost port=5432 dbname=test user=postgres password=example", autocommit=True) as conn:
+	with psycopg.connect("host=localhost port=5433 dbname=test user=postgres password=example", autocommit=True) as conn:
 		for i in range(0, 27):
 			with conn.cursor() as curr:
 				calculate_metrics_postgresql(curr, i)
