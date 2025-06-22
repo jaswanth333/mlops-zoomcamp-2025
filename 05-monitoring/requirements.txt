@@ -1,3 +1,4 @@
+mage-ai
 prefect
 tqdm
 requests
